@@ -20,25 +20,30 @@ const App = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    const sunrise = formatToLocalTime(
-        weather?.sys?.sunrise,
-        weather?.timezone,
-        "HH:mm"
-    );
+    const isDaytime = (() => {
+        // Default to a daytime gradient if weather data isn't available
+        if (!weather || !weather.sys || !weather.dt || !weather.timezone) {
+            return true;
+        }
 
-    const sunset = formatToLocalTime(
-        weather?.sys?.sunset,
-        weather?.timezone,
-        "HH:mm"
-    );
+        const sunrise = formatToLocalTime(
+            weather.sys.sunrise,
+            weather.timezone,
+            "HH:mm"
+        );
+        const sunset = formatToLocalTime(
+            weather.sys.sunset,
+            weather.timezone,
+            "HH:mm"
+        );
+        const localTime = formatToLocalTime(
+            weather.dt,
+            weather.timezone,
+            "HH:mm"
+        );
 
-    const localTime = formatToLocalTime(
-        weather?.dt,
-        weather?.timezone,
-        "HH:mm"
-    );
-
-    const isDaytime = localTime >= sunrise && localTime < sunset;
+        return localTime >= sunrise && localTime < sunset;
+    })();
 
     // Function to add city to favourites
     const updateFavourites = (city) => {
@@ -58,7 +63,7 @@ const App = () => {
         localStorage.setItem("favourites", JSON.stringify(updatedFavorites));
     };
 
-    // Fetch weather when city or unit changes
+    // Fetch weather and forecast
     useEffect(() => {
         if (!city) return;
         let cancelled = false;
@@ -67,36 +72,23 @@ const App = () => {
             try {
                 setLoading(true);
                 setError("");
-                const data = await fetchWeather(city, unit);
-                if (!cancelled) setWeather(data);
+
+                // fetch both in parallel
+                const [weatherData, forecastData] = await Promise.all([
+                    fetchWeather(city, unit),
+                    fetchForecast(city, unit),
+                ]);
+
+                if (!cancelled) {
+                    setWeather(weatherData);
+                    setForecast(forecastData);
+                }
             } catch (e) {
-                if (!cancelled)
-                    setError(e?.message || "Failed to fetch weather");
-            } finally {
-                if (!cancelled) setLoading(false);
-            }
-        };
-
-        load();
-        return () => {
-            cancelled = true;
-        };
-    }, [city, unit]);
-
-    // Fetch forecast when city or unit changes
-    useEffect(() => {
-        if (!city) return;
-        let cancelled = false;
-
-        const load = async () => {
-            try {
-                setLoading(true);
-                setError("");
-                const data = await fetchForecast(city, unit);
-                if (!cancelled) setForecast(data);
-            } catch (e) {
-                if (!cancelled)
-                    setError(e?.message || "Failed to fetch weather");
+                if (!cancelled) {
+                    setError(e?.message || "Failed to fetch weather data");
+                    setWeather(null);
+                    setForecast(null);
+                }
             } finally {
                 if (!cancelled) setLoading(false);
             }
@@ -119,38 +111,50 @@ const App = () => {
                 <NavBar />
                 <SearchBar setCity={setCity} unit={unit} setUnit={setUnit} />
 
-                {error && <p className="mt-4 text-red-300">{error}</p>}
-                {loading && <p className="mt-4 text-white/80"></p>}
-
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-                    <div className="lg:col-span-2 space-y-6">
-                        <CurrentWeather
-                            weather={weather}
-                            forecast={forecast}
-                            unit={unit}
-                            city={city}
-                            favourites={favourites}
-                            updateFavourites={updateFavourites}
-                        />
-                        <HourlyChart
-                            weather={weather}
-                            forecast={forecast}
-                            unit={unit}
-                        />
-                        <Forecast forecast={forecast} unit={unit} />
+                {/* Error Message */}
+                {error && (
+                    <div className="flex justify-center">
+                        <p className="mt-4 italic capitalize text-red-300 text-center">
+                            ({city} — {error})
+                        </p>
                     </div>
+                )}
 
-                    <div className="space-y-6">
-                        <SunMoonTimings weather={weather} />
-                        <AirQuality weather={weather} />
-                        <Favorites
-                            favourites={favourites}
-                            unit={unit}
-                            updateFavourites={updateFavourites}
-                            setCity={setCity}
-                        />
+                {/* Loading state */}
+                {loading && <p className="mt-4 text-white/80">Loading...</p>}
+
+                {/* Main Content */}
+                {!loading && weather && forecast && (
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+                        <div className="lg:col-span-2 space-y-6">
+                            <CurrentWeather
+                                weather={weather}
+                                forecast={forecast}
+                                unit={unit}
+                                city={city}
+                                favourites={favourites}
+                                updateFavourites={updateFavourites}
+                            />
+                            <HourlyChart
+                                weather={weather}
+                                forecast={forecast}
+                                unit={unit}
+                            />
+                            <Forecast forecast={forecast} unit={unit} />
+                        </div>
+
+                        <div className="space-y-6">
+                            <SunMoonTimings weather={weather} />
+                            <AirQuality weather={weather} />
+                            <Favorites
+                                favourites={favourites}
+                                unit={unit}
+                                updateFavourites={updateFavourites}
+                                setCity={setCity}
+                            />
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );

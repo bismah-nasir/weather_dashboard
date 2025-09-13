@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { RiLeafLine, RiInformationLine } from "react-icons/ri";
+import { fetchAirQuality } from "../api/weather";
 
 //Global AQI Index
 const AQI_MAP = {
@@ -118,27 +119,27 @@ const POLLUTANT_THRESHOLDS = {
     ],
     o3: [
         {
-            max: 0.054,
+            max: 54,
             label: "Good",
             classes: { text: "text-green-300", bg: "bg-green-500/20" },
         },
         {
-            max: 0.07,
+            max: 70,
             label: "Moderate",
             classes: { text: "text-yellow-300", bg: "bg-yellow-500/20" },
         },
         {
-            max: 0.085,
+            max: 85,
             label: "Unhealthy SG",
             classes: { text: "text-orange-300", bg: "bg-orange-500/20" },
         },
         {
-            max: 0.105,
+            max: 105,
             label: "Unhealthy",
             classes: { text: "text-red-300", bg: "bg-red-500/20" },
         },
         {
-            max: 0.2,
+            max: 200,
             label: "Very Unhealthy",
             classes: { text: "text-purple-300", bg: "bg-purple-500/20" },
         },
@@ -198,27 +199,41 @@ const AirQuality = ({ weather }) => {
 
     const [airData, setAirData] = useState(null);
 
+    // useEffect(() => {
+    //     if (!lat || !lon) return;
+
+    //     const fetchAir = async () => {
+    //         const API_KEY = import.meta.env.VITE_APP_ID;
+    //         const url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
+
+    //         try {
+    //             const res = await fetch(url);
+    //             if (!res.ok) throw new Error("Failed to fetch air quality");
+
+    //             const data = await res.json();
+    //             console.log("Air API Response:", data);
+    //             setAirData(data.list[0]);
+    //         } catch (err) {
+    //             console.error("Air API error:", err);
+    //         }
+    //     };
+
+    //     fetchAir();
+    // }, [lat, lon]);
+
     useEffect(() => {
-        if (!lat || !lon) return;
+        if (!weather?.coord?.lat || !weather?.coord?.lon) return;
 
-        const fetchAir = async () => {
-            const API_KEY = import.meta.env.VITE_APP_ID;
-            const url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
-
-            try {
-                const res = await fetch(url);
-                if (!res.ok) throw new Error("Failed to fetch air quality");
-
-                const data = await res.json();
-                console.log("Air API Response:", data);
-                setAirData(data.list[0]); // only one item
-            } catch (err) {
-                console.error("Air API error:", err);
-            }
+        const loadAirData = async () => {
+            const data = await fetchAirQuality(
+                weather.coord.lat,
+                weather.coord.lon
+            );
+            setAirData(data);
         };
 
-        fetchAir();
-    }, [lat, lon]);
+        loadAirData();
+    }, [weather]);
 
     if (!airData) {
         return <div className="text-white/70">Loading air quality data...</div>;

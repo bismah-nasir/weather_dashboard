@@ -1,16 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IoIosSearch } from "react-icons/io";
+import { RxCrossCircled } from "react-icons/rx";
 
 const SearchBar = ({ setCity, unit, setUnit }) => {
     const [input, setInput] = useState("");
+    const [toastMessage, setToastMessage] = useState("");
+
+    useEffect(() => {
+        if (toastMessage) {
+            const timer = setTimeout(() => {
+                setToastMessage("");
+            }, 3000); // Hide the toast after 3 seconds
+            return () => clearTimeout(timer); // Clean up the timer
+        }
+    }, [toastMessage]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!input) return;
-
-        setCity(input); // only set city, App will fetch automatically
-        setInput("");
+        if (!input.trim()) {
+            setToastMessage("Please fill in the city name!");
+        } else {
+            // If the input is valid, set the city and clear the input field
+            setCity(input);
+            setInput("");
+            setToastMessage(""); // Clear any previous error message
+        }
     };
 
     return (
@@ -65,6 +80,17 @@ const SearchBar = ({ setCity, unit, setUnit }) => {
                     </button>
                 </div>
             </form>
+            {/* Toast/Alert Box */}
+            {toastMessage && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 px-6 py-3 rounded-xl bg-red-100 text-red-700 shadow-md flex items-center gap-2 animate-slide-in-up z-50 border border-red-300">
+                    <RxCrossCircled
+                        className="text-red-700"
+                        size={20}
+                        strokeWidth="0.5"
+                    />
+                    <span className="font-medium text-sm">{toastMessage}</span>
+                </div>
+            )}
         </div>
     );
 };

@@ -70,7 +70,7 @@ export const processForecastData = (list) => {
     // Group data by date (YYYY-MM-DD)
     const days = {};
 
-    if(!list){
+    if (!list) {
         return;
     }
 
