@@ -21,9 +21,9 @@ The app uses the [OpenWeather API](https://openweathermap.org/) to fetch real-ti
 
 ## 🖼️ Screenshots
 
-![Day View](./screenshots/day.png)
+![Day View](https://github.com/bismah-nasir/weather_dashboard/blob/bdcda5c89ed9a122209a734311054fb143985a06/public/day.png)
 
-![Night View](./screenshots/night.png)
+![Night View](https://github.com/bismah-nasir/weather_dashboard/blob/bdcda5c89ed9a122209a734311054fb143985a06/public/night.png)
 
 ---
 
@@ -61,39 +61,38 @@ The app uses the [OpenWeather API](https://openweathermap.org/) to fetch real-ti
     npm run dev
     ```
 
-5. Open "http://localhost:5173" in your browser.
+5. Open ```http://localhost:5173``` in your browser.
 
 ---
 
 ## ⚙️ Project Structure
 
-    ```bash
-    weather-dashboard/
-    │── public/                # Static assets
-    │── src/
-    │   ├── api/               # API calls (weather, forecast, air quality)
-    │   │   └── weather.js
-    │   ├── components/        # UI Components
-    │   │   ├── AirQuality.jsx
-    │   │   ├── CurrentWeather.jsx
-    │   │   ├── Favorites.jsx
-    │   │   ├── Forecast.jsx
-    │   │   ├── HourlyChart.jsx
-    │   │   ├── NavBar.jsx
-    │   │   ├── SearchBar.jsx
-    │   │   └── SunMoonTimings.jsx
-    │   ├── utils/             # Helper functions
-    │   ├── App.jsx            # Main entry
-    ├── ├── index.css
-    │   └── main.jsx           # React root
-    │── .env                   # API key (not committed)
-    │── README.md
-    │── eslint.config.js
-    │── index.html
-    │── package-lock.json
-    │── package.json
-    └── vite.config.js
-     
+ ```
+ weather-dashboard/
+ │── public/                # Static assets
+ │── src/
+ │   ├── api/               # API calls (weather, forecast, air quality)
+ │   │   └── weather.js
+ │   ├── components/        # UI Components
+ │   │   ├── AirQuality.jsx
+ │   │   ├── CurrentWeather.jsx
+ │   │   ├── Favorites.jsx
+ │   │   ├── Forecast.jsx
+ │   │   ├── HourlyChart.jsx
+ │   │   ├── NavBar.jsx
+ │   │   ├── SearchBar.jsx
+ │   │   └── SunMoonTimings.jsx
+ │   ├── utils/             # Helper functions
+ │   ├── App.jsx            # Main entry
+ ├── ├── index.css
+ │   └── main.jsx           # React root
+ │── .env                   # API key (not committed)
+ │── README.md
+ │── eslint.config.js
+ │── index.html
+ │── package-lock.json
+ │── package.json
+ └── vite.config.js
 ```
 
 ---
@@ -102,14 +101,13 @@ The app uses the [OpenWeather API](https://openweathermap.org/) to fetch real-ti
 
 The project requires the following environment variable:
 
-"VITE_APP_ID"	OpenWeather API key (required)
+```VITE_APP_ID```	OpenWeather API key (required)
 
 ---
 
 ## 🌐 Live Demo
 
-You can view the live version of the AI Recipe Generator App deployed on Vercel here:
-Link
+You can view the live version of the Weather Dashboard deployed on Vercel here: https://weatherly-dashboard.vercel.app/
 
 ---
 
@@ -132,8 +130,6 @@ Link
 ## 👨‍💻 Author
 Bismah Nasir
 
-[GitHub](https://github.com/bismah-nasir)
-
-[LinkedIn](https://www.linkedin.com/in/bismah-nasir/)
+[GitHub](https://github.com/bismah-nasir) | [LinkedIn](https://www.linkedin.com/in/bismah-nasir/)
 
 ---
