@@ -36,11 +36,11 @@ const CurrentWeather = ({
         <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-8 border border-white/30 shadow-xl">
             {/* Location and Time */}
             <div className="flex justify-between items-start mb-6">
-                <div>
-                    <h2 className="text-3xl font-bold text-white mb-2">
+                <div className="flex-1 min-w-0 pr-4">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2 truncate">
                         {weather.name}
                     </h2>
-                    <p className="text-white/80 text-lg">
+                    <p className="text-white/80 text-sm sm:text-lg whitespace-nowrap">
                         {"Today • " + formattedTime}
                     </p>
                 </div>

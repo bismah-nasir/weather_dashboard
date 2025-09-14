@@ -84,9 +84,13 @@ const Favorites = ({ favourites, unit, updateFavourites, setCity }) => {
                                     type="button"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        updateFavourites(city);
+                                        // Add visual feedback by temporarily changing color
+                                        e.target.closest('button').classList.add('text-pink-300');
+                                        setTimeout(() => {
+                                            updateFavourites(city);
+                                        }, 150);
                                     }}
-                                    className="opacity-0 group-hover:opacity-100 text-white/60 hover:text-red-300 transition-all duration-300">
+                                    className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 text-white/60 hover:text-pink-300 active:text-pink-300 transition-all duration-300">
                                     <div className="w-6 h-6 flex items-center justify-center">
                                         <RiCloseLine className="text-lg" />
                                     </div>
@@ -97,8 +101,9 @@ const Favorites = ({ favourites, unit, updateFavourites, setCity }) => {
                 )}
             </div>
             <div className="mt-4 pt-4 border-t border-white/20">
-                <div className="flex items-center justify-between text-xs text-white/60">
-                    <span>Click to view • Hover to remove</span>
+                <div className="flex items-center justify-center sm:justify-between text-xs text-white/60">
+                    <span className="sm:hidden">Click to view</span>
+                    <span className="hidden sm:block">Click to view • Hover to remove</span>
                 </div>
             </div>
         </div>
