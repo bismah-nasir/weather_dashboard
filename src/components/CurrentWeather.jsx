@@ -72,7 +72,7 @@ const CurrentWeather = ({
                 <div className="text-center lg:text-left">
                     <div className="flex items-center justify-center lg:justify-start gap-4 mb-4">
                         <div className="w-20 h-20 flex items-center justify-center">
-                            <img src={img}></img>
+                            <img src={img} alt={weather.weather[0].description} />
                         </div>
                         <div>
                             <div className="text-6xl font-bold text-white">

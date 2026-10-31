@@ -22,9 +22,6 @@ const Forecast = ({ forecast, unit }) => {
                 5-Day Forecast
             </h3>
 
-            {console.log("5-Day Forecast")}
-            {console.log(dailyForecast)}
-
             <div className="space-y-4">
                 {dailyForecast.dailySummaries.map((summary, index) => (
                     <div
@@ -32,7 +29,7 @@ const Forecast = ({ forecast, unit }) => {
                         className="flex items-center justify-between p-4 bg-white/10 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
                         {/* Mobile: Left - Weather Icon */}
                         <div className="w-12 h-12 flex items-center justify-center flex-shrink-0 sm:hidden">
-                            <img src={iconUrlFromCode(summary.icon)} className="w-10 h-10"></img>
+                            <img src={iconUrlFromCode(summary.icon)} alt={summary.description} className="w-10 h-10" />
                         </div>
                         
                         {/* Mobile: Middle - Label and Description */}
@@ -70,8 +67,7 @@ const Forecast = ({ forecast, unit }) => {
                         {/* Desktop: Original Layout */}
                         <div className="hidden sm:flex items-center gap-4 flex-1">
                             <div className="w-12 h-12 flex items-center justify-center">
-                                <img src={iconUrlFromCode(summary.icon)}></img>
-                                <i className="ri-cloudy-2-line text-3xl text-white"></i>
+                                <img src={iconUrlFromCode(summary.icon)} alt={summary.description} />
                             </div>
                             <div className="flex-1">
                                 <div className="text-white font-semibold text-lg">

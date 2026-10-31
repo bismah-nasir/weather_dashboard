@@ -14,9 +14,15 @@ const App = () => {
     const [unit, setUnit] = useState("metric"); // "metric" = °C, "imperial" = °F
     const [weather, setWeather] = useState(null);
     const [forecast, setForecast] = useState(null);
-    const [favourites, setFavourites] = useState(
-        JSON.parse(localStorage.getItem("favourites")) || []
-    );
+    const [favourites, setFavourites] = useState(() => {
+        try {
+            const saved = JSON.parse(localStorage.getItem("favourites"));
+            return Array.isArray(saved) ? saved : [];
+        } catch {
+            // Corrupted data in storage: start with no favourites
+            return [];
+        }
+    });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 

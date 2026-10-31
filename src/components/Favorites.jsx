@@ -5,6 +5,8 @@ import { fetchWeather } from "../api/weather";
 
 const Favorites = ({ favourites, unit, updateFavourites, setCity }) => {
     const [weatherData, setWeatherData] = useState([]);
+    // City whose delete button was just pressed, highlighted until it's removed
+    const [removingCity, setRemovingCity] = useState(null);
 
     useEffect(() => {
         if (favourites.length === 0) {
@@ -111,13 +113,18 @@ const Favorites = ({ favourites, unit, updateFavourites, setCity }) => {
                                         aria-label={`Remove ${city} from favourites`}
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            // Add visual feedback by temporarily changing color
-                                            e.currentTarget.classList.add('text-pink-300');
+                                            // Brief visual feedback before the row disappears
+                                            setRemovingCity(city);
                                             setTimeout(() => {
                                                 updateFavourites(city);
+                                                setRemovingCity(null);
                                             }, 150);
                                         }}
-                                        className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100 text-white/60 hover:text-pink-300 active:text-pink-300 transition-all duration-300">
+                                        className={`opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100 hover:text-pink-300 active:text-pink-300 transition-all duration-300 ${
+                                            removingCity === city
+                                                ? "text-pink-300"
+                                                : "text-white/60"
+                                        }`}>
                                         <div className="w-6 h-6 flex items-center justify-center">
                                             <RiCloseLine className="text-lg" />
                                         </div>

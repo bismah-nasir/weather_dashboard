@@ -2,30 +2,14 @@ import { DateTime } from "luxon";
 
 // Function to get icon png
 export const iconUrlFromCode = (icon) =>
-    `http://openweathermap.org/img/wn/${icon}@2x.png`;
+    `https://openweathermap.org/img/wn/${icon}@2x.png`;
 
 // Function to convert time in specified format
-export const formatToLocalTime = (secs, offset, format = "cccc, LLLL dd'") => {
+export const formatToLocalTime = (secs, offset, format = "cccc, LLLL dd") => {
     if (!secs || offset == null) return "";
     return DateTime.fromSeconds(secs + offset, { zone: "utc" }).toFormat(
         format
     );
-};
-
-// Function to get difference in time
-export const timeDifference = (fromSecs, toSecs) => {
-    if (!fromSecs || !toSecs) return "";
-
-    const from = DateTime.fromSeconds(fromSecs, { zone: "utc" });
-    const to = DateTime.fromSeconds(toSecs, { zone: "utc" });
-
-    if (!from.isValid || !to.isValid) return "Invalid Time";
-
-    const diff = to.diff(from, ["minutes"]); // difference in hours + minutes
-    const hours = Math.floor(diff.hours);
-    const minutes = Math.floor(diff.minutes);
-
-    return `${hours}h ${minutes}m`;
 };
 
 // Function to get difference in "xh ym" format

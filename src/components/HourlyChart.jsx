@@ -68,113 +68,59 @@ const HourlyChart = ({ weather, forecast, unit }) => {
                 24-Hour Temperature Trend
             </h3>
 
-            {isMobile ? (
-                <>
-                    {/* Mobile Chart */}
-                    <div className="h-80 mt-6 -ml-10 -mr-3">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={data}>
-                                <CartesianGrid
-                                    strokeDasharray="2 2 "
-                                    stroke="#ffffff50"
-                                />
-                                <XAxis dataKey="time" stroke="#fff" fontSize={10} />
-                                <YAxis
-                                    domain={[(dataMin) => Math.floor(dataMin - 10), (dataMax) => Math.ceil(dataMax + 10)]}
-                                    stroke="#fff"
-                                    fontSize={10}
-                                    label={{
-                                        fontSize: 10,
-                                        value: `°${unit === "metric" ? "C" : "F"}`,
-                                        angle: -90,
-                                        fill: "#fff",
-                                    }}
-                                />
-                                <Tooltip
-                                    contentStyle={{
-                                        backgroundColor: "#2563eb",
-                                        border: "none",
-                                        borderRadius: "10px",
-                                        color: "white",
-                                    }}
-                                />
-                                <Line
-                                    type="monotone"
-                                    dataKey="temp"
-                                    stroke="#93c5fd"
-                                    strokeWidth={3}
-                                    dot={{ r: 5, fill: "#93c5fd" }}
-                                    activeDot={{ r: 7 }}
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
+            <div className={`h-80 mt-6 ${isMobile ? "-ml-10 -mr-3" : ""}`}>
+                <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={data}>
+                        <CartesianGrid
+                            strokeDasharray={isMobile ? "2 2" : "3 3"}
+                            stroke="#ffffff50"
+                        />
+                        <XAxis
+                            dataKey="time"
+                            stroke="#fff"
+                            fontSize={isMobile ? 10 : undefined}
+                        />
+                        <YAxis
+                            domain={[(dataMin) => Math.floor(dataMin - 10), (dataMax) => Math.ceil(dataMax + 10)]}
+                            stroke="#fff"
+                            fontSize={isMobile ? 10 : undefined}
+                            label={{
+                                fontSize: isMobile ? 10 : undefined,
+                                value: `°${unit === "metric" ? "C" : "F"}`,
+                                angle: -90,
+                                position: isMobile ? undefined : "insideLeft",
+                                fill: "#fff",
+                            }}
+                        />
+                        <Tooltip
+                            contentStyle={{
+                                backgroundColor: "#2563eb",
+                                border: "none",
+                                borderRadius: "10px",
+                                color: "white",
+                            }}
+                        />
+                        <Line
+                            type="monotone"
+                            dataKey="temp"
+                            stroke="#93c5fd"
+                            strokeWidth={3}
+                            dot={{ r: 5, fill: "#93c5fd" }}
+                            activeDot={{ r: 7 }}
+                        />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
+            <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/20 text-xs sm:text-sm">
+                <div className="flex items-center gap-2 text-white/80">
+                    <div className="w-6 h-6 flex items-center justify-center">
+                        <RiThermometerLine className="text-lg"></RiThermometerLine>
                     </div>
-                    <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/20">
-                        <div className="flex items-center gap-2 text-white/80 text-xs">
-                            <div className="w-6 h-6 flex items-center justify-center">
-                                <RiThermometerLine className="text-lg"></RiThermometerLine>
-                            </div>
-                            <span>Temperature in °{unit === "metric" ? "C" : "F"}</span>
-                        </div>
-                        <div className="text-white/60 text-xs">
-                            Updated at {updatedAt}
-                        </div>
-                    </div>
-                </>
-            ) : (
-                <>
-                    {/* Desktop Chart */}
-                    <div className="h-80 mt-6">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={data}>
-                                <CartesianGrid
-                                    strokeDasharray="3 3 "
-                                    stroke="#ffffff50"
-                                />
-                                <XAxis dataKey="time" stroke="#fff" />
-                                <YAxis
-                                    domain={[(dataMin) => Math.floor(dataMin - 10), (dataMax) => Math.ceil(dataMax + 10)]}
-                                    stroke="#fff"
-                                    label={{
-                                        value: `°${unit === "metric" ? "C" : "F"}`,
-                                        angle: -90,
-                                        position: "insideLeft",
-                                        fill: "#fff",
-                                    }}
-                                />
-                                <Tooltip
-                                    contentStyle={{
-                                        backgroundColor: "#2563eb",
-                                        border: "none",
-                                        borderRadius: "10px",
-                                        color: "white",
-                                    }}
-                                />
-                                <Line
-                                    type="monotone"
-                                    dataKey="temp"
-                                    stroke="#93c5fd"
-                                    strokeWidth={3}
-                                    dot={{ r: 5, fill: "#93c5fd" }}
-                                    activeDot={{ r: 7 }}
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
-                    </div>
-                    <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/20">
-                        <div className="flex items-center gap-2 text-white/80 text-sm">
-                            <div className="w-6 h-6 flex items-center justify-center">
-                                <RiThermometerLine className="text-lg"></RiThermometerLine>
-                            </div>
-                            <span>Temperature in °{unit === "metric" ? "C" : "F"}</span>
-                        </div>
-                        <div className="text-white/60 text-sm">
-                            Updated at {updatedAt}
-                        </div>
-                    </div>
-                </>
-            )}
-        </div >
+                    <span>Temperature in °{unit === "metric" ? "C" : "F"}</span>
+                </div>
+                <div className="text-white/60">Updated at {updatedAt}</div>
+            </div>
+        </div>
     );
 };
 

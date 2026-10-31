@@ -42,8 +42,8 @@ The app uses the [OpenWeather API](https://openweathermap.org/) to fetch real-ti
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/your-username/weather-dashboard.git
-   cd weather-dashboard
+   git clone https://github.com/bismah-nasir/weather_dashboard.git
+   cd weather_dashboard
    ```
 
 2. Install dependencies:

@@ -185,63 +185,47 @@ const POLLUTANT_THRESHOLDS = {
     ],
 };
 
+const UNKNOWN_STATUS = {
+    label: "N/A",
+    classes: { text: "text-gray-300", bg: "bg-gray-500/20" },
+};
+
 const getPollutantStatus = (pollutant, value) => {
     const rules = POLLUTANT_THRESHOLDS[pollutant];
-    if (!rules)
-        return {
-            label: "N/A",
-            classes: { text: "text-gray-300", bg: "bg-gray-500/20" },
-        };
+    if (!rules || typeof value !== "number") return UNKNOWN_STATUS;
     return rules.find((r) => value <= r.max);
 };
 
 const AirQuality = ({ weather }) => {
-
     const [airData, setAirData] = useState(null);
     const [error, setError] = useState("");
 
-    // useEffect(() => {
-    //     if (!lat || !lon) return;
-
-    //     const fetchAir = async () => {
-    //         const API_KEY = import.meta.env.VITE_APP_ID;
-    //         const url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
-
-    //         try {
-    //             const res = await fetch(url);
-    //             if (!res.ok) throw new Error("Failed to fetch air quality");
-
-    //             const data = await res.json();
-    //             console.log("Air API Response:", data);
-    //             setAirData(data.list[0]);
-    //         } catch (err) {
-    //             console.error("Air API error:", err);
-    //         }
-    //     };
-
-    //     fetchAir();
-    // }, [lat, lon]);
+    const lat = weather?.coord?.lat;
+    const lon = weather?.coord?.lon;
 
     useEffect(() => {
-        if (!weather?.coord?.lat || !weather?.coord?.lon) return;
+        if (lat == null || lon == null) return;
+        // Ignore responses for a city the user has already moved away from
+        let cancelled = false;
 
         const loadAirData = async () => {
+            setAirData(null);
             setError("");
             try {
-                const data = await fetchAirQuality(
-                    weather.coord.lat,
-                    weather.coord.lon
-                );
-                setAirData(data);
+                const data = await fetchAirQuality(lat, lon);
+                if (!cancelled) setAirData(data);
             } catch (err) {
+                if (cancelled) return;
                 console.error("Error fetching air quality:", err);
-                setAirData(null);
                 setError("Air quality data is unavailable right now.");
             }
         };
 
         loadAirData();
-    }, [weather]);
+        return () => {
+            cancelled = true;
+        };
+    }, [lat, lon]);
 
     if (error) {
         return <div className="text-white/70">{error}</div>;
@@ -251,7 +235,10 @@ const AirQuality = ({ weather }) => {
         return <div className="text-white/70">Loading air quality data...</div>;
     }
 
-    const aqi = airData.main.aqi;
+    const aqi = airData.main?.aqi;
+    if (!AQI_MAP[aqi]) {
+        return <div className="text-white/70">Air quality data is unavailable right now.</div>;
+    }
     const { label, classes, advice } = AQI_MAP[aqi];
     const comps = airData.components;
 
