@@ -6,7 +6,7 @@ export const iconUrlFromCode = (icon) =>
 
 // Function to convert time in specified format
 export const formatToLocalTime = (secs, offset, format = "cccc, LLLL dd'") => {
-    if (!secs || !offset) return "";
+    if (!secs || offset == null) return "";
     return DateTime.fromSeconds(secs + offset, { zone: "utc" }).toFormat(
         format
     );

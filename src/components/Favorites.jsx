@@ -16,8 +16,14 @@ const Favorites = ({ favourites, unit, updateFavourites, setCity }) => {
         const loadWeather = async () => {
             const results = await Promise.all(
                 favourites.map(async (city) => {
-                    const data = await fetchWeather(city, unit);
-                    return { city, data };
+                    // One failed city shouldn't empty the whole list
+                    try {
+                        const data = await fetchWeather(city, unit);
+                        return { city, data };
+                    } catch (error) {
+                        console.error(`Error fetching weather for ${city}:`, error);
+                        return { city, data: null };
+                    }
                 })
             );
             setWeatherData(results.filter((r) => r.data));

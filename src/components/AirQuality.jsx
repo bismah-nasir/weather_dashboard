@@ -198,6 +198,7 @@ const AirQuality = ({ weather }) => {
     const lon = weather?.coord?.lon;
 
     const [airData, setAirData] = useState(null);
+    const [error, setError] = useState("");
 
     // useEffect(() => {
     //     if (!lat || !lon) return;
@@ -225,15 +226,26 @@ const AirQuality = ({ weather }) => {
         if (!weather?.coord?.lat || !weather?.coord?.lon) return;
 
         const loadAirData = async () => {
-            const data = await fetchAirQuality(
-                weather.coord.lat,
-                weather.coord.lon
-            );
-            setAirData(data);
+            setError("");
+            try {
+                const data = await fetchAirQuality(
+                    weather.coord.lat,
+                    weather.coord.lon
+                );
+                setAirData(data);
+            } catch (err) {
+                console.error("Error fetching air quality:", err);
+                setAirData(null);
+                setError("Air quality data is unavailable right now.");
+            }
         };
 
         loadAirData();
     }, [weather]);
+
+    if (error) {
+        return <div className="text-white/70">{error}</div>;
+    }
 
     if (!airData) {
         return <div className="text-white/70">Loading air quality data...</div>;

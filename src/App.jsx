@@ -22,7 +22,7 @@ const App = () => {
 
     const isDaytime = (() => {
         // Default to a daytime gradient if weather data isn't available
-        if (!weather || !weather.sys || !weather.dt || !weather.timezone) {
+        if (!weather || !weather.sys || !weather.dt || weather.timezone == null) {
             return true;
         }
 
