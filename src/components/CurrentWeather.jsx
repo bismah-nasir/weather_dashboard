@@ -41,7 +41,7 @@ const CurrentWeather = ({
     const lowTemp = Math.min(dailyForecast.dailySummaries[0].lowTemp, currentTemp);
 
     return (
-        <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-8 border border-white/30 shadow-xl">
+        <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-5 sm:p-8 border border-white/30 shadow-xl">
             {/* Location and Time */}
             <div className="flex justify-between items-start mb-6">
                 <div className="flex-1 min-w-0 pr-4">
@@ -72,7 +72,11 @@ const CurrentWeather = ({
                 <div className="text-center lg:text-left">
                     <div className="flex items-center justify-center lg:justify-start gap-4 mb-4">
                         <div className="w-20 h-20 flex items-center justify-center">
-                            <img src={img} alt={weather.weather[0].description} />
+                            <img
+                                src={img}
+                                alt={weather.weather[0].description}
+                                className="w-20 h-20 drop-shadow-[0_0_8px_rgba(255,255,255,0.45)]"
+                            />
                         </div>
                         <div>
                             <div className="text-6xl font-bold text-white">
@@ -89,49 +93,49 @@ const CurrentWeather = ({
                         {weather.weather[0].description}
                     </div>
                 </div>
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-2 gap-3 sm:gap-6">
                     {/* Humidity */}
-                    <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
-                        <div className="flex items-center gap-3 mb-2">
+                    <div className="bg-white/10 rounded-2xl p-3 sm:p-4 backdrop-blur-sm">
+                        <div className="flex items-center gap-2 sm:gap-3 mb-2">
                             <div className="w-6 h-6 flex items-center justify-center">
                                 <RiDropLine
                                     className="text-2xl text-blue-300"
                                     style={{ strokeWidth: 1 }}></RiDropLine>
                             </div>
-                            <span className="text-white/80 text-sm">
+                            <span className="text-white/80 text-sm whitespace-nowrap">
                                 Humidity
                             </span>
                         </div>
-                        <div className="text-2xl font-bold text-white">
+                        <div className="text-xl sm:text-2xl font-bold text-white whitespace-nowrap">
                             {weather.main.humidity}%
                         </div>
                     </div>
 
                     {/* Wind Speed */}
-                    <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
-                        <div className="flex items-center gap-3 mb-2">
+                    <div className="bg-white/10 rounded-2xl p-3 sm:p-4 backdrop-blur-sm">
+                        <div className="flex items-center gap-2 sm:gap-3 mb-2">
                             <div className="w-6 h-6 flex items-center justify-center">
                                 <RiWindyLine className="text-2xl text-cyan-300"></RiWindyLine>
                             </div>
-                            <span className="text-white/80 text-sm">
+                            <span className="text-white/80 text-sm whitespace-nowrap">
                                 Wind Speed
                             </span>
                         </div>
-                        <div className="text-2xl font-bold text-white">
+                        <div className="text-xl sm:text-2xl font-bold text-white whitespace-nowrap">
                             {convertWindSpeed(weather.wind.speed, unit)} km/h
                         </div>
                     </div>
 
                     {/* High Temperature */}
-                    <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
-                        <div className="flex items-center gap-3 mb-2">
+                    <div className="bg-white/10 rounded-2xl p-3 sm:p-4 backdrop-blur-sm">
+                        <div className="flex items-center gap-2 sm:gap-3 mb-2">
                             <div className="w-6 h-6 flex items-center justify-center">
                                 <FaTemperatureHigh className="text-2xl text-red-400"></FaTemperatureHigh>
                             </div>
-                            <span className="text-white/80 text-sm">High</span>
+                            <span className="text-white/80 text-sm whitespace-nowrap">High</span>
                         </div>
                         <div className="flex items-center gap-3">
-                            <div className="text-2xl font-bold text-white">
+                            <div className="text-xl sm:text-2xl font-bold text-white whitespace-nowrap">
                                 {highTemp}°
                                 {unit === "metric" ? "C" : "F"}
                             </div>
@@ -139,15 +143,15 @@ const CurrentWeather = ({
                     </div>
 
                     {/* Low Temperature */}
-                    <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
-                        <div className="flex items-center gap-3 mb-2">
+                    <div className="bg-white/10 rounded-2xl p-3 sm:p-4 backdrop-blur-sm">
+                        <div className="flex items-center gap-2 sm:gap-3 mb-2">
                             <div className="w-6 h-6 flex items-center justify-center">
                                 <FaTemperatureLow className="text-2xl text-green-400"></FaTemperatureLow>
                             </div>
-                            <span className="text-white/80 text-sm">Low</span>
+                            <span className="text-white/80 text-sm whitespace-nowrap">Low</span>
                         </div>
                         <div className="flex items-center gap-3">
-                            <div className="text-2xl font-bold text-white">
+                            <div className="text-xl sm:text-2xl font-bold text-white whitespace-nowrap">
                                 {lowTemp}°
                                 {unit === "metric" ? "C" : "F"}
                             </div>

@@ -68,9 +68,11 @@ const HourlyChart = ({ weather, forecast, unit }) => {
                 24-Hour Temperature Trend
             </h3>
 
-            <div className={`h-80 mt-6 ${isMobile ? "-ml-10 -mr-3" : ""}`}>
+            <div className="h-80 mt-6">
                 <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={data}>
+                    <LineChart
+                        data={data}
+                        margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                         <CartesianGrid
                             strokeDasharray={isMobile ? "2 2" : "3 3"}
                             stroke="#ffffff50"
@@ -79,18 +81,15 @@ const HourlyChart = ({ weather, forecast, unit }) => {
                             dataKey="time"
                             stroke="#fff"
                             fontSize={isMobile ? 10 : undefined}
+                            tickMargin={8}
+                            padding={{ left: 12, right: 12 }}
                         />
                         <YAxis
                             domain={[(dataMin) => Math.floor(dataMin - 10), (dataMax) => Math.ceil(dataMax + 10)]}
                             stroke="#fff"
                             fontSize={isMobile ? 10 : undefined}
-                            label={{
-                                fontSize: isMobile ? 10 : undefined,
-                                value: `°${unit === "metric" ? "C" : "F"}`,
-                                angle: -90,
-                                position: isMobile ? undefined : "insideLeft",
-                                fill: "#fff",
-                            }}
+                            width={isMobile ? 32 : 44}
+                            tickFormatter={(value) => `${value}°`}
                         />
                         <Tooltip
                             contentStyle={{

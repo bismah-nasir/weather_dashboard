@@ -127,7 +127,15 @@ const App = () => {
                 )}
 
                 {/* Loading state */}
-                {loading && <p className="mt-4 text-white/80">Loading...</p>}
+                {loading && (
+                    <div
+                        role="status"
+                        className="flex flex-col items-center justify-center gap-3 mt-16"
+                    >
+                        <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                        <p className="text-white/80">Loading weather...</p>
+                    </div>
+                )}
 
                 {/* Main Content */}
                 {!loading && weather && forecast && (

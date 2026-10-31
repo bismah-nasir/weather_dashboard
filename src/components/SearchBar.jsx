@@ -57,7 +57,7 @@ const SearchBar = ({ setCity, unit, setUnit }) => {
                 </div>
 
                 {/* Unit Toggle */}
-                <div className="flex bg-white/20 backdrop-blur-sm rounded-xl p-1 border border-white/30">
+                <div className="flex gap-1 bg-white/20 backdrop-blur-sm rounded-xl p-1 border border-white/30">
                     <button
                         type="button"
                         className={`px-4 py-2 rounded-lg transition-all duration-300 cursor-pointer whitespace-nowrap ${
