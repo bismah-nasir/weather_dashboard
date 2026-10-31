@@ -66,7 +66,8 @@ export function convertWindSpeed(speed, units) {
 }
 
 // Function to process the 5 days temperature
-export const processForecastData = (list) => {
+// offset is the city's UTC offset in seconds, so days are grouped in the city's timezone
+export const processForecastData = (list, offset = 0) => {
     // Group data by date (YYYY-MM-DD)
     const days = {};
 
@@ -75,7 +76,9 @@ export const processForecastData = (list) => {
     }
 
     list.forEach((entry) => {
-        const date = DateTime.fromSeconds(entry.dt).toFormat("yyyy-MM-dd");
+        const date = DateTime.fromSeconds(entry.dt + offset, {
+            zone: "utc",
+        }).toFormat("yyyy-MM-dd");
 
         if (!days[date]) {
             days[date] = {

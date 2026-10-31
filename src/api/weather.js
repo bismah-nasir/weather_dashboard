@@ -67,7 +67,7 @@ export async function fetchWeather(city, unit = "metric") {
     const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
 
     const res = await fetch(
-        `${BASE_URL}?q=${city}&appid=${API_KEY}&units=${unit}`
+        `${BASE_URL}?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=${unit}`
     );
 
     // This is the correct way to handle an error.
@@ -88,7 +88,7 @@ export async function fetchForecast(city, unit = "metric") {
     const BASE_URL = "https://api.openweathermap.org/data/2.5/forecast";
 
     const res = await fetch(
-        `${BASE_URL}?q=${city}&appid=${API_KEY}&units=${unit}`
+        `${BASE_URL}?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=${unit}`
     );
 
     if (!res.ok) {

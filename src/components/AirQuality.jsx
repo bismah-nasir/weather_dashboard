@@ -117,29 +117,31 @@ const POLLUTANT_THRESHOLDS = {
             classes: { text: "text-pink-300", bg: "bg-pink-500/20" },
         },
     ],
+    // OpenWeather reports µg/m³, so the US EPA ppb breakpoints are converted
+    // (1 ppb O₃ ≈ 1.96 µg/m³, 1 ppb NO₂ ≈ 1.88 µg/m³ at 25 °C)
     o3: [
         {
-            max: 54,
+            max: 106,
             label: "Good",
             classes: { text: "text-green-300", bg: "bg-green-500/20" },
         },
         {
-            max: 70,
+            max: 137,
             label: "Moderate",
             classes: { text: "text-yellow-300", bg: "bg-yellow-500/20" },
         },
         {
-            max: 85,
+            max: 167,
             label: "Unhealthy SG",
             classes: { text: "text-orange-300", bg: "bg-orange-500/20" },
         },
         {
-            max: 105,
+            max: 206,
             label: "Unhealthy",
             classes: { text: "text-red-300", bg: "bg-red-500/20" },
         },
         {
-            max: 200,
+            max: 392,
             label: "Very Unhealthy",
             classes: { text: "text-purple-300", bg: "bg-purple-500/20" },
         },
@@ -151,27 +153,27 @@ const POLLUTANT_THRESHOLDS = {
     ],
     no2: [
         {
-            max: 53,
+            max: 100,
             label: "Good",
             classes: { text: "text-green-300", bg: "bg-green-500/20" },
         },
         {
-            max: 100,
+            max: 188,
             label: "Moderate",
             classes: { text: "text-yellow-300", bg: "bg-yellow-500/20" },
         },
         {
-            max: 360,
+            max: 677,
             label: "Unhealthy SG",
             classes: { text: "text-orange-300", bg: "bg-orange-500/20" },
         },
         {
-            max: 649,
+            max: 1220,
             label: "Unhealthy",
             classes: { text: "text-red-300", bg: "bg-red-500/20" },
         },
         {
-            max: 1249,
+            max: 2348,
             label: "Very Unhealthy",
             classes: { text: "text-purple-300", bg: "bg-purple-500/20" },
         },
@@ -194,8 +196,6 @@ const getPollutantStatus = (pollutant, value) => {
 };
 
 const AirQuality = ({ weather }) => {
-    const lat = weather?.coord?.lat;
-    const lon = weather?.coord?.lon;
 
     const [airData, setAirData] = useState(null);
     const [error, setError] = useState("");

@@ -52,38 +52,38 @@ const SunMoonTimings = ({ weather }) => {
                         </div>
                     </div>
                 </div>
-                <div class="flex items-center justify-between p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center shadow-lg">
-                            <div class="w-6 h-6 flex items-center justify-center">
-                                <FiMoon class="ri-moon-line text-xl text-white"></FiMoon>
+                <div className="flex items-center justify-between p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center shadow-lg">
+                            <div className="w-6 h-6 flex items-center justify-center">
+                                <FiMoon className="ri-moon-line text-xl text-white"></FiMoon>
                             </div>
                         </div>
                         <div>
-                            <div class="text-white/80 text-sm">Sunset</div>
-                            <div class="text-white font-semibold text-lg">
+                            <div className="text-white/80 text-sm">Sunset</div>
+                            <div className="text-white font-semibold text-lg">
                                 {sunset}
                             </div>
                         </div>
                     </div>
                     {beforeSunset && (
-                        <div class="text-xs text-purple-300 bg-purple-500/20 px-2 py-1 rounded-full">
+                        <div className="text-xs text-purple-300 bg-purple-500/20 px-2 py-1 rounded-full">
                             {timeLeftStr + " left"}
                         </div>
                     )}
                 </div>
-                <div class="text-center p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
-                    <div class="text-white/80 text-sm mb-1">Current Time</div>
-                    <div class="text-white font-semibold text-xl">
+                <div className="text-center p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
+                    <div className="text-white/80 text-sm mb-1">Current Time</div>
+                    <div className="text-white font-semibold text-xl">
                         {localTime}
                     </div>
 
                     {isDaytime ? (
-                        <div class="text-sm mt-2 text-yellow-300">
+                        <div className="text-sm mt-2 text-yellow-300">
                             ☀️ Daytime
                         </div>
                     ) : (
-                        <div class="text-sm mt-2 text-blue-300">
+                        <div className="text-sm mt-2 text-blue-300">
                             🌙 Nighttime
                         </div>
                     )}

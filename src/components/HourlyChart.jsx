@@ -1,6 +1,6 @@
 import { RiLineChartLine } from "react-icons/ri";
 import { RiThermometerLine } from "react-icons/ri";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { formatToLocalTime } from "../utils/utils";
 
 import {
@@ -13,33 +13,38 @@ import {
     ResponsiveContainer,
 } from "recharts";
 
-let data = [];
+// 8 forecast points, 3 hours apart, cover the next 24 hours
+const FORECAST_POINTS = 8;
 
-const getNextSevenHourForecast = (forecast, weather) => {
-    const currentTime = weather?.dt + weather?.timezone;
-    const firstIndex = forecast?.list?.findIndex(
-        (item) => item?.dt > currentTime
-    );
-    return forecast.list.slice(firstIndex, firstIndex + 7);
+const getNext24HourForecast = (forecast, weather) => {
+    // Both dt values are UTC, so compare them directly
+    const firstIndex = forecast.list.findIndex((item) => item.dt > weather.dt);
+    if (firstIndex === -1) return [];
+    return forecast.list.slice(firstIndex, firstIndex + FORECAST_POINTS);
 };
 
 const HourlyChart = ({ weather, forecast, unit }) => {
-    const [hourForecast, setHourForecast] = useState([]);
     const [isMobile, setIsMobile] = useState(false);
 
-    const firstHourTime = formatToLocalTime(
-        weather?.dt,
-        weather?.timezone,
-        "HH:mm"
-    );
+    const data = useMemo(() => {
+        if (!forecast?.list || !weather) return [];
 
-    const hourData = [firstHourTime.slice(0, 3) + "00"];
-    const tempData = [Math.round(weather?.main?.temp)];
+        const current = {
+            time: formatToLocalTime(weather.dt, weather.timezone, "HH:mm"),
+            temp: Math.round(weather.main.temp),
+        };
 
-    useEffect(() => {
-        if (!forecast || !weather) return;
-        setHourForecast(getNextSevenHourForecast(forecast, weather));
+        const upcoming = getNext24HourForecast(forecast, weather).map(
+            (hour) => ({
+                time: formatToLocalTime(hour.dt, weather.timezone, "HH:mm"),
+                temp: Math.round(hour.main.temp),
+            })
+        );
+
+        return [current, ...upcoming];
     }, [forecast, weather]);
+
+    const updatedAt = formatToLocalTime(weather?.dt, weather?.timezone, "HH:mm");
 
     useEffect(() => {
         const checkScreenSize = () => {
@@ -63,17 +68,6 @@ const HourlyChart = ({ weather, forecast, unit }) => {
                 24-Hour Temperature Trend
             </h3>
 
-            {hourForecast.map((hour) => {
-                tempData.push(Math.round(hour.main.temp));
-                hourData.push(hour.dt_txt.split(" ")[1].slice(0, 5));
-            })}
-            {(() => {
-                data = hourData.map((time, index) => ({
-                    time,
-                    temp: tempData[index],
-                }));
-            })()}
-
             {isMobile ? (
                 <>
                     {/* Mobile Chart */}
@@ -86,7 +80,7 @@ const HourlyChart = ({ weather, forecast, unit }) => {
                                 />
                                 <XAxis dataKey="time" stroke="#fff" fontSize={10} />
                                 <YAxis
-                                    domain={[(dataMin) => Math.ceil(dataMin - 10), (dataMax) => Math.ceil(dataMax + 10)]}
+                                    domain={[(dataMin) => Math.floor(dataMin - 10), (dataMax) => Math.ceil(dataMax + 10)]}
                                     stroke="#fff"
                                     fontSize={10}
                                     label={{
@@ -123,7 +117,7 @@ const HourlyChart = ({ weather, forecast, unit }) => {
                             <span>Temperature in °{unit === "metric" ? "C" : "F"}</span>
                         </div>
                         <div className="text-white/60 text-xs">
-                            Next update in 15 minutes
+                            Updated at {updatedAt}
                         </div>
                     </div>
                 </>
@@ -139,7 +133,7 @@ const HourlyChart = ({ weather, forecast, unit }) => {
                                 />
                                 <XAxis dataKey="time" stroke="#fff" />
                                 <YAxis
-                                    domain={[0, (dataMax) => Math.ceil(dataMax + 10)]}
+                                    domain={[(dataMin) => Math.floor(dataMin - 10), (dataMax) => Math.ceil(dataMax + 10)]}
                                     stroke="#fff"
                                     label={{
                                         value: `°${unit === "metric" ? "C" : "F"}`,
@@ -175,7 +169,7 @@ const HourlyChart = ({ weather, forecast, unit }) => {
                             <span>Temperature in °{unit === "metric" ? "C" : "F"}</span>
                         </div>
                         <div className="text-white/60 text-sm">
-                            Next update in 15 minutes
+                            Updated at {updatedAt}
                         </div>
                     </div>
                 </>

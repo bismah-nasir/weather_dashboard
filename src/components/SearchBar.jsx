@@ -22,7 +22,7 @@ const SearchBar = ({ setCity, unit, setUnit }) => {
             setToastMessage("Please fill in the city name!");
         } else {
             // If the input is valid, set the city and clear the input field
-            setCity(input);
+            setCity(input.trim());
             setInput("");
             setToastMessage(""); // Clear any previous error message
         }

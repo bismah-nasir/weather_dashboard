@@ -26,11 +26,19 @@ const CurrentWeather = ({
 
     const img = iconUrlFromCode(weather.weather[0].icon);
 
-    const dailyForecast = processForecastData(forecast?.list);
+    const dailyForecast = processForecastData(
+        forecast?.list,
+        forecast?.city?.timezone
+    );
 
     if (!dailyForecast) {
         return <p>Loading forecast...</p>;
     }
+
+    // Include the current temperature so it can't fall outside High/Low
+    const currentTemp = Math.round(weather.main.temp);
+    const highTemp = Math.max(dailyForecast.dailySummaries[0].highTemp, currentTemp);
+    const lowTemp = Math.min(dailyForecast.dailySummaries[0].lowTemp, currentTemp);
 
     return (
         <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-8 border border-white/30 shadow-xl">
@@ -49,7 +57,7 @@ const CurrentWeather = ({
                         updateFavourites(city);
                     }}
                     className="text-white hover:text-yellow-300 transition-colors duration-300 cursor-pointer">
-                    <div class="w-8 h-8 flex items-center justify-center">
+                    <div className="w-8 h-8 flex items-center justify-center">
                         {isFavorite ? (
                             <FaHeart className="text-2xl" />
                         ) : (
@@ -87,7 +95,7 @@ const CurrentWeather = ({
                         <div className="flex items-center gap-3 mb-2">
                             <div className="w-6 h-6 flex items-center justify-center">
                                 <RiDropLine
-                                    class="text-2xl text-blue-300"
+                                    className="text-2xl text-blue-300"
                                     style={{ strokeWidth: 1 }}></RiDropLine>
                             </div>
                             <span className="text-white/80 text-sm">
@@ -124,7 +132,7 @@ const CurrentWeather = ({
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="text-2xl font-bold text-white">
-                                {dailyForecast.dailySummaries[0].highTemp}°
+                                {highTemp}°
                                 {unit === "metric" ? "C" : "F"}
                             </div>
                         </div>
@@ -140,7 +148,7 @@ const CurrentWeather = ({
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="text-2xl font-bold text-white">
-                                {dailyForecast.dailySummaries[0].lowTemp}°
+                                {lowTemp}°
                                 {unit === "metric" ? "C" : "F"}
                             </div>
                         </div>

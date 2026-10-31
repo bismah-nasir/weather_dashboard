@@ -49,7 +49,7 @@ const App = () => {
     const updateFavourites = (city) => {
         const favoritesCopy = [...favourites];
         let updatedFavorites;
-        const lowerCity = city.toLowerCase();
+        const lowerCity = city.trim().toLowerCase();
         // Delete city
         if (favoritesCopy.includes(lowerCity)) {
             updatedFavorites = favoritesCopy.filter(
@@ -153,6 +153,18 @@ const App = () => {
                                 setCity={setCity}
                             />
                         </div>
+                    </div>
+                )}
+
+                {/* Keep favourites reachable when the search fails */}
+                {!loading && !(weather && forecast) && (
+                    <div className="mt-8 lg:w-1/3">
+                        <Favorites
+                            favourites={favourites}
+                            unit={unit}
+                            updateFavourites={updateFavourites}
+                            setCity={setCity}
+                        />
                     </div>
                 )}
             </div>
