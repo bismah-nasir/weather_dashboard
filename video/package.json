@@ -1,0 +1,18 @@
+{
+  "name": "weather-dashboard-demo-video",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "music": "node scripts/generate-music.mjs",
+    "studio": "remotion studio src/index.js",
+    "render": "remotion render src/index.js WeatherDashboardDemo out/weather-dashboard-demo.mp4",
+    "poster": "remotion still src/index.js WeatherPoster out/poster.jpg --image-format=jpeg"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.539",
+    "@remotion/google-fonts": "^4.0.539",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.539"
+  }
+}

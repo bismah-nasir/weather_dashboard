@@ -5,7 +5,8 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // video/ is the separate Remotion project for the demo video and poster
+  globalIgnores(['dist', 'video']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [
